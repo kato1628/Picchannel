@@ -18,7 +18,8 @@ class ViewController: UIViewController {
         
         do {
             // urlから画像を取得
-            let url = NSURL(string: "http://chocobit.com/blog/wp-content/uploads/2007/01/panorama.jpg");
+            let url = NSURL(string: "https://scontent.cdninstagram.com/hphotos-xfa1/t51.2885-15/s640x640/sh0.08/e35/12139835_481785788659634_1326639266_n.jpg");
+            
             let imageData :NSData = try NSData(contentsOfURL: url! ,options: NSDataReadingOptions.DataReadingMappedIfSafe)
 
             // UIImageに画像を設定する.
@@ -40,6 +41,7 @@ class ViewController: UIViewController {
             scrollView.contentSize = CGSizeMake(myImageView.frame.size.width, myImageView.frame.size.height)
             
         } catch {
+            // error出力
             print(error)
             print("error has occurred.")
             return
