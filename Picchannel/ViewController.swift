@@ -16,6 +16,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        // ローディングを開始する。
+        MRProgressOverlayView.showOverlayAddedTo(self.view, animated: true);
+        
         do {
             // 画像urlを設定する.
             var urls : [String] = [
@@ -61,6 +64,9 @@ class ViewController: UIViewController {
             print("error has occurred.")
             return
         }
+        
+        // ローディングを終了する。
+        MRProgressOverlayView.dismissOverlayForView(self.view, animated: true)
         
     }
 
