@@ -20,6 +20,27 @@ class ViewController: UIViewController {
         MRProgressOverlayView.showOverlayAddedTo(self.view, animated: true);
         
         do {
+            let engine: InstagramEngine = InstagramEngine.sharedEngine()
+            
+            // 人気の画像を取得する.
+            engine.getPopularMediaWithSuccess({ media, paginationInfo in
+                
+                // 成功の場合
+                print("success get media.")
+                
+                for m in media {
+
+                    // 画像URLを出力する.
+                    print(m.lowResolutionImageURL)
+                }
+                
+            },failure: { error, serverStatusCode in
+                
+                // 失敗の場合
+                print("failure get media.")
+                
+            })
+
             // 画像urlを設定する.
             var urls : [String] = [
                 "https://scontent.cdninstagram.com/hphotos-xfa1/t51.2885-15/s320x320/e35/12070661_1728238167404162_154574692_n.jpg",
