@@ -62,10 +62,10 @@ class ViewController: UIViewController {
         
         do {
         
-            for i in 0...(mediaUrls.count - 1) {
+            for url in mediaUrls {
                 
                 // urlから画像を取得する.
-                let imageData :NSData = try NSData(contentsOfURL: mediaUrls[i] ,options: NSDataReadingOptions.DataReadingMappedIfSafe)
+                let imageData :NSData = try NSData(contentsOfURL: url ,options: NSDataReadingOptions.DataReadingMappedIfSafe)
                 
                 // UIImageに画像を設定する.
                 let myImage = UIImage(data: imageData)!
