@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!
+    var mediaUrls : [NSURL] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,8 +19,7 @@ class ViewController: UIViewController {
         
         // ローディングを開始する。
         MRProgressOverlayView.showOverlayAddedTo(self.view, animated: true);
-        
-        do {
+
             let engine: InstagramEngine = InstagramEngine.sharedEngine()
             
             // 人気の画像を取得する.
@@ -29,10 +29,19 @@ class ViewController: UIViewController {
                 print("success get media.")
                 
                 for m in media {
-
+                    
                     // 画像URLを出力する.
                     print(m.lowResolutionImageURL)
+                    
+                    self.mediaUrls.append(m.lowResolutionImageURL)
                 }
+                
+                // 非同期処理完了後にurl画像を表示
+                self.dispayMedia()
+                
+                // ローディングを終了する。
+                MRProgressOverlayView.dismissOverlayForView(self.view, animated: true)
+                
                 
             },failure: { error, serverStatusCode in
                 
@@ -40,22 +49,24 @@ class ViewController: UIViewController {
                 print("failure get media.")
                 
             })
+    }
 
-            // 画像urlを設定する.
-            var urls : [String] = [
-                "https://scontent.cdninstagram.com/hphotos-xfa1/t51.2885-15/s320x320/e35/12070661_1728238167404162_154574692_n.jpg",
-                "https://scontent.cdninstagram.com/hphotos-xfa1/t51.2885-15/s320x320/e35/11337185_773036789492157_1799302479_n.jpg",
-                "https://scontent.cdninstagram.com/hphotos-xfa1/t51.2885-15/s320x320/e35/12093269_1664014217215940_2028057166_n.jpg"
-            ]
-            
-            var y: CGFloat = 0
-            
-            for i in 0...(urls.count - 1) {
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    func dispayMedia(){
+        
+        var y: CGFloat = 0
+        
+        do {
+        
+            for i in 0...(mediaUrls.count - 1) {
                 
                 // urlから画像を取得する.
-                let url = NSURL(string: urls[i]);
-                let imageData :NSData = try NSData(contentsOfURL: url! ,options: NSDataReadingOptions.DataReadingMappedIfSafe)
-
+                let imageData :NSData = try NSData(contentsOfURL: mediaUrls[i] ,options: NSDataReadingOptions.DataReadingMappedIfSafe)
+                
                 // UIImageに画像を設定する.
                 let myImage = UIImage(data: imageData)!
                 
@@ -85,16 +96,6 @@ class ViewController: UIViewController {
             print("error has occurred.")
             return
         }
-        
-        // ローディングを終了する。
-        MRProgressOverlayView.dismissOverlayForView(self.view, animated: true)
-        
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }
 
