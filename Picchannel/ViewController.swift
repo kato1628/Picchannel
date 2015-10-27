@@ -8,54 +8,89 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIWebViewDelegate {
 
     @IBOutlet weak var scrollView: UIScrollView!
+    
     var mediaUrls : [NSURL] = []
+    var webview: UIWebView = UIWebView()
+    let engine: InstagramEngine = InstagramEngine.sharedEngine()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        // ローディングを開始する。
+        // ローディングを開始する.
         MRProgressOverlayView.showOverlayAddedTo(self.view, animated: true);
+        
+        // 認証画面を表示する.
+        self.displayAuthenticationPage()
+        
+        // 人気の画像を表示する.
+        // self.dispayPopularMedia()
+        
+    }
 
-            let engine: InstagramEngine = InstagramEngine.sharedEngine()
+    /*
+    認証画面を表示する
+    */
+    func displayAuthenticationPage(){
+        
+        // Delegateを設定する.
+        webview.delegate = self
+        
+        // WebViewのサイズを設定する.
+        webview.frame = self.view.bounds
+        
+        // Viewに追加する.
+        self.view.addSubview(webview)
+        
+        // 認証URLを取得する.
+        let authorizationUrl : NSURL = engine.authorizationURL()
+        
+        // リクエストを作成する.
+        let urlRequest: NSURLRequest = NSURLRequest(URL: authorizationUrl)
+        
+        // リクエストを実行する.
+        webview.loadRequest(urlRequest)
+        
+    }
+    
+    /*
+    人気の画像を取得し表示する.
+    */
+    func dispayPopularMedia(){
+        
+        engine.getPopularMediaWithSuccess({ media, paginationInfo in
             
-            // 人気の画像を取得する.
-            engine.getPopularMediaWithSuccess({ media, paginationInfo in
+            // 成功の場合
+            print("success get media.")
+            
+            for m in media {
                 
-                // 成功の場合
-                print("success get media.")
-                
-                for m in media {
-                    
-                    // 画像URLを出力する.
-                    print(m.lowResolutionImageURL)
-                    
-                    self.mediaUrls.append(m.lowResolutionImageURL)
-                }
-                
-                // 非同期処理完了後にurl画像を表示
-                self.dispayMedia()
-                
-                // ローディングを終了する。
-                MRProgressOverlayView.dismissOverlayForView(self.view, animated: true)
-                
-                
+                // 画像URLを取得する.
+                self.mediaUrls.append(m.lowResolutionImageURL)
+            }
+            
+            // 非同期処理完了後にurl画像を表示
+            self.dispayMedia()
+            
+            // ローディングを終了する。
+            MRProgressOverlayView.dismissOverlayForView(self.view, animated: true);
+            
             },failure: { error, serverStatusCode in
                 
                 // 失敗の場合
+                print(error)
                 print("failure get media.")
                 
-            })
+        })
+        
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
+    /*
+    画像一覧を表示する
+    */
     func dispayMedia(){
         
         var y: CGFloat = 0
@@ -97,5 +132,18 @@ class ViewController: UIViewController {
             return
         }
     }
+    
+    /*
+    webviewがすべて読み込み終わった時呼ばれるデリゲートメソッド.
+    */
+    func webViewDidFinishLoad(webView: UIWebView) {
+        print("webViewDidFinishLoad")
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
 }
 
