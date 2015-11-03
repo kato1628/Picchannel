@@ -20,17 +20,46 @@ class ViewController: UIViewController, UIWebViewDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        print("***** viewDidLoad start. *****")
+        
         // ローディングを開始する.
         MRProgressOverlayView.showOverlayAddedTo(self.view, animated: true);
         
         // 認証画面を表示する.
         self.displayAuthenticationPage()
-        
+
         // 人気の画像を表示する.
         // self.dispayPopularMedia()
         
+        print("***** viewDidLoad end.   *****")
+        
     }
-
+    
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        
+        print("**** webView start")
+        do {
+            // 認証済みの場合AccessTokenを取得する
+            try engine.receivedValidAccessTokenFromURL(request.URL)
+            
+            print("success to get access token.")
+            
+            // ユーザのフィードを表示する.
+            self.displaySelfFeed()
+            
+            return false
+            
+        } catch {
+            
+            print("fail to get access token.")
+            print(error)
+        
+        }
+        
+        print("**** webView end")
+        return true
+    }
+    
     /*
     認証画面を表示する
     */
@@ -47,6 +76,9 @@ class ViewController: UIViewController, UIWebViewDelegate {
         
         // 認証URLを取得する.
         let authorizationUrl : NSURL = engine.authorizationURL()
+        
+        // 認証URLをログ出力する.
+        print(authorizationUrl)
         
         // リクエストを作成する.
         let urlRequest: NSURLRequest = NSURLRequest(URL: authorizationUrl)
@@ -88,6 +120,41 @@ class ViewController: UIViewController, UIWebViewDelegate {
         
     }
 
+    /*
+    自分のフィードの画像を表示する.
+    */
+    func displaySelfFeed(){
+        
+        // ローディングを開始する.
+        MRProgressOverlayView.showOverlayAddedTo(self.view, animated: true);
+        
+        engine.getSelfFeedWithSuccess({ media, paginationInfo in
+            
+            // 成功の場合
+            print("success get self media.")
+            
+            for m in media {
+                
+                // 画像URLを取得する.
+                print(m.lowResolutionImageURL)
+                self.mediaUrls.append(m.lowResolutionImageURL)
+            }
+            
+            // 非同期処理完了後にurl画像を表示
+            self.dispayMedia()
+            
+            // ローディングを終了する。
+            MRProgressOverlayView.dismissOverlayForView(self.view, animated: true);
+            
+            },failure: { error, serverStatusCode in
+                
+                // 失敗の場合
+                print(error)
+                print("failure get self media.")
+                
+        })
+    }
+    
     /*
     画像一覧を表示する
     */
