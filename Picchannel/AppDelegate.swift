@@ -13,9 +13,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        return true
+    }
+    
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        
+        // URLをログ出力する.
+        print(url)
+        
+        // TODO ルーティング処理を追加する.
+        
+        // UIStoryboardを生成する.
+        let storyboard:UIStoryboard =  UIStoryboard(name: "Main",bundle:nil)
+        
+        // UIViewControllerを生成する.
+        let viewController:UIViewController
+        
+        // 表示するUIViewControllerをIdentifierをキーに取得する.
+        viewController = storyboard.instantiateViewControllerWithIdentifier("View") as UIViewController
+        
+        // rootViewControllerを設定する.
+        window?.rootViewController = viewController
+        
         return true
     }
 
