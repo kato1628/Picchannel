@@ -121,13 +121,19 @@ class ViewController: UIViewController, UIWebViewDelegate {
     }
     
     /*
+    webviewが読み込まれ始める時呼ばれるデリゲートメソッド.
+    */
+    func webViewDidStartLoad(webView: UIWebView) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        print("indicator on")
+    }
+    
+    /*
     webviewがすべて読み込み終わった時呼ばれるデリゲートメソッド.
     */
     func webViewDidFinishLoad(webView: UIWebView) {
-        print("webViewDidFinishLoad")
-        
-        // ローディングを終了する。
-        MRProgressOverlayView.dismissOverlayForView(self.view, animated: true);
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        print("indicator off")
     }
     
     override func didReceiveMemoryWarning() {
