@@ -99,7 +99,7 @@ class SelfFeedViewController: UIViewController {
     */
     func dispayMedia(){
         
-        var y: CGFloat = 0
+        var y: CGFloat = 20
         
         do {
             

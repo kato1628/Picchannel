@@ -12,8 +12,13 @@ class ViewController: UIViewController, UIWebViewDelegate {
 
     @IBOutlet weak var scrollView: UIScrollView!
     
-    var mediaUrls : [NSURL] = []
-    var webview: UIWebView = UIWebView()
+    @IBAction func cancel(sender: UIBarButtonItem) {
+        // ログインナビゲーションを閉じる.
+        navigationController!.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBOutlet weak var webView: UIWebView!
+
     let engine: InstagramEngine = InstagramEngine.sharedEngine()
     
     override func viewDidLoad() {
@@ -93,13 +98,13 @@ class ViewController: UIViewController, UIWebViewDelegate {
     func displayAuthenticationPage(){
         
         // Delegateを設定する.
-        webview.delegate = self
+        webView.delegate = self
         
         // WebViewのサイズを設定する.
-        webview.frame = self.view.bounds
+        webView.frame = self.view.bounds
         
         // Viewに追加する.
-        self.view.addSubview(webview)
+        self.view.addSubview(webView)
         
         // 認証URLを取得する.
         let authorizationUrl : NSURL = engine.authorizationURL()
@@ -111,7 +116,7 @@ class ViewController: UIViewController, UIWebViewDelegate {
         let urlRequest: NSURLRequest = NSURLRequest(URL: authorizationUrl)
         
         // リクエストを実行する.
-        webview.loadRequest(urlRequest)
+        webView.loadRequest(urlRequest)
         
     }
     
