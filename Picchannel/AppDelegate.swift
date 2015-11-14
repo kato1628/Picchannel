@@ -26,13 +26,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TODO ルーティング処理を追加する.
         
         // UIStoryboardを生成する.
-        let storyboard:UIStoryboard =  UIStoryboard(name: "Main",bundle:nil)
+        let storyboard: UIStoryboard =  UIStoryboard(name: "Main",bundle:nil)
         
         // UIViewControllerを生成する.
-        let viewController:UIViewController
+        let viewController: UIViewController
         
         // 表示するUIViewControllerをIdentifierをキーに取得する.
-        viewController = storyboard.instantiateViewControllerWithIdentifier("View") as UIViewController
+        viewController = storyboard.instantiateViewControllerWithIdentifier("SelfFeed") as UIViewController
         
         // rootViewControllerを設定する.
         window?.rootViewController = viewController

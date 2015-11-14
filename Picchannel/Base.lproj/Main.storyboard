@@ -36,5 +36,37 @@
             </objects>
             <point key="canvasLocation" x="305" y="387"/>
         </scene>
+        <!--Self Feed View Controller-->
+        <scene sceneID="OJC-vQ-9lw">
+            <objects>
+                <viewController storyboardIdentifier="SelfFeed" useStoryboardIdentifierAsRestorationIdentifier="YES" id="A5b-UG-bIw" customClass="SelfFeedViewController" customModule="Picchannel" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="JNA-P4-OZA"/>
+                        <viewControllerLayoutGuide type="bottom" id="Vd4-k1-Wyj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="As7-0R-Cmv">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1U5-Zt-YqI">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="1U5-Zt-YqI" firstAttribute="leading" secondItem="As7-0R-Cmv" secondAttribute="leading" id="MKY-so-Bef"/>
+                            <constraint firstAttribute="trailing" secondItem="1U5-Zt-YqI" secondAttribute="trailing" id="lNS-cF-XKS"/>
+                            <constraint firstItem="1U5-Zt-YqI" firstAttribute="bottom" secondItem="Vd4-k1-Wyj" secondAttribute="top" id="n7e-44-Klm"/>
+                            <constraint firstItem="1U5-Zt-YqI" firstAttribute="top" secondItem="As7-0R-Cmv" secondAttribute="top" id="qsI-PA-sTJ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="scrollView" destination="1U5-Zt-YqI" id="4PC-8S-KD2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="63x-dt-uaX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1007" y="387"/>
+        </scene>
     </scenes>
 </document>
