@@ -8,11 +8,16 @@
 
 import UIKit
 
-class SelfFeedViewController: UIViewController {
+class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableViewDelegate{
     
-    @IBOutlet weak var scrollView: UIScrollView!
+    // @IBOutlet weak var scrollView: UIScrollView!
+    
+    @IBOutlet weak var selfFeedTable: UITableView!
     
     var mediaUrls : [NSURL] = []
+    var medias : NSArray = []
+    var imageData = NSData()
+    var myImage = UIImage()
     let engine: InstagramEngine = InstagramEngine.sharedEngine()
     
     override func viewDidLoad() {
@@ -23,10 +28,94 @@ class SelfFeedViewController: UIViewController {
         // ローディングを開始する.
         MRProgressOverlayView.showOverlayAddedTo(self.view, animated: true);
         
+        // タイムラインの画像URLを取得する.
+        self.getSelfFeed()
+        
         // ユーザのフィードを表示する.
-        self.displaySelfFeed()
+        // self.displaySelfFeed()
         
         print("display self feed end")
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        
+        // viewのロード後インディケーターをoffにする.
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        print("indicator off")
+    }
+    
+    // TableViewのセルの数を指定
+    func tableView(selfFeedTable: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("medias count\(mediaUrls.count)")
+        return mediaUrls.count
+    }
+    
+    func tableView(selfFeedTable: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        print("table view start \(indexPath.row)")
+        
+        // tableCellのIDでUITableViewCellのインスタンスを生成
+        let cell = selfFeedTable.dequeueReusableCellWithIdentifier("mediaCell", forIndexPath: indexPath)
+        
+        do {
+            // urlから画像データを取得する.
+            let imageData :NSData = try NSData(contentsOfURL: self.mediaUrls[indexPath.row] ,options: NSDataReadingOptions.DataReadingMappedIfSafe)
+            
+            // UIImageに画像を設定する.
+            let myImage = UIImage(data: imageData)!
+            
+            // tableViewのUIImageに取得した画像を設定する.
+            let imageView = selfFeedTable.viewWithTag(1) as! UIImageView
+            imageView.image = myImage
+
+        } catch {
+            
+            // error出力
+            print(error)
+            print("error has occurred.")
+
+        }
+        
+        return cell
+    }
+    
+    /*
+    自分のフィードの画像URLを取得する.
+    */
+    func getSelfFeed(){
+        
+        print("start get self feed")
+        
+        engine.getSelfFeedWithSuccess({ media, paginationInfo in
+            
+            // 成功の場合
+            print("success get self media.")
+            
+            for m in media {
+                
+                // 画像URLを取得する.
+                self.mediaUrls.append(m.lowResolutionImageURL)
+                
+            }
+
+            self.selfFeedTable.reloadData()
+            
+//            dispatch_async(dispatch_get_main_queue(), {
+//                self.selfFeedTable.reloadData()
+//            })
+            
+            // ローディングを終了する。
+            MRProgressOverlayView.dismissOverlayForView(self.view, animated: true);
+            
+            print("finished getting self media.")
+            
+            },failure: { error, serverStatusCode in
+                
+                // 失敗の場合
+                print(error)
+                print("failure get self media.")
+                
+        })
     }
     
     /*
@@ -120,13 +209,13 @@ class SelfFeedViewController: UIViewController {
                 myImageView.frame = CGRectMake(0, y, myImage.size.width, myImage.size.height)
                 
                 // ScrollViewにmyImageViewを追加する.
-                scrollView.addSubview(myImageView)
+                // scrollView.addSubview(myImageView)
                 
                 // 画像サイズを取得する.
                 y += myImage.size.height + 0.5
                 
                 // ScrollViewにcontentSizeを設定する.
-                scrollView.contentSize = CGSizeMake(myImageView.frame.size.width, y)
+                // scrollView.contentSize = CGSizeMake(myImageView.frame.size.width, y)
                 
             }
             
