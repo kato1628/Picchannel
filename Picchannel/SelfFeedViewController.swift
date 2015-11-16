@@ -15,9 +15,6 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
     @IBOutlet weak var selfFeedTable: UITableView!
     
     var mediaUrls : [NSURL] = []
-    var medias : NSArray = []
-    var imageData = NSData()
-    var myImage = UIImage()
     let engine: InstagramEngine = InstagramEngine.sharedEngine()
     
     override func viewDidLoad() {
