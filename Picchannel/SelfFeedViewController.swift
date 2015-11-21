@@ -16,6 +16,7 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
     
     var mediaUrls : [NSURL] = []
     let engine: InstagramEngine = InstagramEngine.sharedEngine()
+    var medias: [InstagramMedia] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,8 +44,8 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
     
     // TableViewのセルの数を指定
     func tableView(selfFeedTable: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("medias count\(mediaUrls.count)")
-        return mediaUrls.count
+        print("medias count\(medias.count)")
+        return medias.count
     }
     
     // TableViewの画像を指定
@@ -57,7 +58,7 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
         
         do {
             // urlから画像データを取得する.
-            let imageData :NSData = try NSData(contentsOfURL: self.mediaUrls[indexPath.row] ,options: NSDataReadingOptions.DataReadingMappedIfSafe)
+            let imageData :NSData = try NSData(contentsOfURL: self.medias[indexPath.row].standardResolutionImageURL! ,options: NSDataReadingOptions.DataReadingMappedIfSafe)
             
             // UIImageに画像を設定する.
             let myImage = UIImage(data: imageData)!
@@ -66,6 +67,13 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
             let imageView = selfFeedTable.viewWithTag(1) as! UIImageView
             imageView.image = myImage
             
+            // tableViewのUILabelに取得したユーザ名を設定する.
+            let userNameLabel = selfFeedTable.viewWithTag(2) as! UILabel
+            userNameLabel.text = "@" + self.medias[indexPath.row].user.username
+            
+            // tableViewのUILabelに取得したユーザ名を設定する.
+            let captionLabel = selfFeedTable.viewWithTag(3) as! UILabel
+            captionLabel.text = self.medias[indexPath.row].caption.text
         } catch {
             
             // error出力
@@ -89,7 +97,9 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
             // 成功の場合
             print("success get self media.")
             
-            for m in media {
+            self.medias = media as! [InstagramMedia]
+            
+            for m in self.medias {
                 
                 // 画像URLを取得する.
                 print(m.standardResolutionImageURL)
