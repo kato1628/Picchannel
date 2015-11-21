@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableViewDelegate{
+class SelfFeedViewController: UIViewController,MNMBottomPullToRefreshManagerClient, UITableViewDataSource, UITableViewDelegate{
     
     // @IBOutlet weak var scrollView: UIScrollView!
     
@@ -17,6 +17,10 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
     var mediaUrls : [NSURL] = []
     let engine: InstagramEngine = InstagramEngine.sharedEngine()
     var medias: [InstagramMedia] = []
+    var refreshControl: UIRefreshControl!
+    var nextMaxId: NSString = ""
+    var refreshCount: Int = 0
+    var refreshManager: MNMBottomPullToRefreshManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,11 +30,14 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
         // ローディングを開始する.
         MRProgressOverlayView.showOverlayAddedTo(self.view, animated: true);
         
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+        selfFeedTable.addSubview(refreshControl)
+        
+        self.refreshManager = MNMBottomPullToRefreshManager(pullToRefreshViewHeight: 60.0, tableView: selfFeedTable, withClient: self)
+        
         // タイムラインの画像URLを取得する.
         self.getSelfFeed()
-        
-        // ユーザのフィードを表示する.
-        // self.displaySelfFeed()
         
         print("display self feed end")
     }
@@ -71,6 +78,53 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
         return cell
     }
     
+    // リフレッシュ時の処理
+    func refresh() {
+        print("refresh start.")
+        engine.getSelfFeedWithCount(refreshCount, maxId: self.nextMaxId as String, success: { media, painationInfo in
+            
+            print(media.count)
+            
+            if media.count > 0 {
+ 
+                print("media update.")
+
+                for (index, m) in media.enumerate() {
+                    print(index)
+                    print(m.standardResolutionImageURL)
+                    self.medias.append(m as! InstagramMedia)
+                }
+                
+                print(self.medias.count)
+                self.selfFeedTable.reloadData()
+                
+            } else {
+                print("no media update.")
+            }
+            
+            self.nextMaxId = painationInfo.nextMaxId
+            self.refreshControl.endRefreshing()
+            
+            }, failure: { error, serverStatusCode in
+                
+                print(error)
+                self.refreshControl.endRefreshing()
+        })
+        print("refresh end.")
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        self.refreshManager.tableViewScrolled()
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        self.refreshManager.tableViewReleased()
+    }
+    
+    func bottomPullToRefreshTriggered(manager :MNMBottomPullToRefreshManager) {
+        self.refresh()
+    }
+    
     /*
     自分のフィードの画像URLを取得する.
     */
@@ -81,15 +135,18 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
         engine.getSelfFeedWithSuccess({ media, paginationInfo in
             
             // 成功の場合
-            print("success get self media.")
+            print("success get self media.\(paginationInfo.nextMaxId)")
             
             self.medias = media as! [InstagramMedia]
+            self.refreshCount = self.medias.count
+            self.nextMaxId = paginationInfo.nextMaxId
             
             for m in self.medias {
                 
                 // 画像URLを取得する.
                 print(m.standardResolutionImageURL)
                 print(m.thumbnailURL)
+                print(paginationInfo)
                 
             }
 
