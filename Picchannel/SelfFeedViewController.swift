@@ -47,6 +47,7 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
         return mediaUrls.count
     }
     
+    // TableViewの画像を指定
     func tableView(selfFeedTable: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         print("table view start \(indexPath.row)")
@@ -64,7 +65,7 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
             // tableViewのUIImageに取得した画像を設定する.
             let imageView = selfFeedTable.viewWithTag(1) as! UIImageView
             imageView.image = myImage
-
+            
         } catch {
             
             // error出力
@@ -91,7 +92,7 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
             for m in media {
                 
                 // 画像URLを取得する.
-                self.mediaUrls.append(m.lowResolutionImageURL)
+                print(m.standardResolutionImageURL)
                 
             }
 
