@@ -55,32 +55,18 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
         
         // tableCellのIDでUITableViewCellのインスタンスを生成
         let cell = selfFeedTable.dequeueReusableCellWithIdentifier("mediaCell", forIndexPath: indexPath)
-        
-        do {
-            // urlから画像データを取得する.
-            let imageData :NSData = try NSData(contentsOfURL: self.medias[indexPath.row].standardResolutionImageURL! ,options: NSDataReadingOptions.DataReadingMappedIfSafe)
-            
-            // UIImageに画像を設定する.
-            let myImage = UIImage(data: imageData)!
-            
-            // tableViewのUIImageに取得した画像を設定する.
-            let imageView = selfFeedTable.viewWithTag(1) as! UIImageView
-            imageView.image = myImage
-            
-            // tableViewのUILabelに取得したユーザ名を設定する.
-            let userNameLabel = selfFeedTable.viewWithTag(2) as! UILabel
-            userNameLabel.text = "@" + self.medias[indexPath.row].user.username
-            
-            // tableViewのUILabelに取得したユーザ名を設定する.
-            let captionLabel = selfFeedTable.viewWithTag(3) as! UILabel
-            captionLabel.text = self.medias[indexPath.row].caption.text
-        } catch {
-            
-            // error出力
-            print(error)
-            print("error has occurred.")
 
-        }
+        // tableViewのUIImageに画像を設定する.
+        let imageView = selfFeedTable.viewWithTag(1) as! UIImageView
+        imageView.sd_setImageWithURL(self.medias[indexPath.row].standardResolutionImageURL)
+        
+        // tableViewのUILabelに取得したユーザ名を設定する.
+        let userNameLabel = selfFeedTable.viewWithTag(2) as! UILabel
+        userNameLabel.text = "@" + self.medias[indexPath.row].user.username
+        
+        // tableViewのUILabelに取得したユーザ名を設定する.
+        let captionLabel = selfFeedTable.viewWithTag(3) as! UILabel
+        captionLabel.text = self.medias[indexPath.row].caption.text
         
         return cell
     }
@@ -103,6 +89,7 @@ class SelfFeedViewController: UIViewController,UITableViewDataSource, UITableVie
                 
                 // 画像URLを取得する.
                 print(m.standardResolutionImageURL)
+                print(m.thumbnailURL)
                 
             }
 

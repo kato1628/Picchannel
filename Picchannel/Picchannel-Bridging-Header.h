@@ -3,3 +3,4 @@
 //
 #import <MRProgress/MRProgress.h>
 #import <InstagramKit/InstagramKit.h>
+#import <SDWebImage/UIImageView+WebCache.h>
