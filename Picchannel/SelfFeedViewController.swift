@@ -10,8 +10,6 @@ import UIKit
 
 class SelfFeedViewController: UIViewController,MNMBottomPullToRefreshManagerClient, UITableViewDataSource, UITableViewDelegate{
     
-    // @IBOutlet weak var scrollView: UIScrollView!
-    
     @IBOutlet weak var selfFeedTable: UITableView!
     
     var mediaUrls : [NSURL] = []
@@ -30,14 +28,16 @@ class SelfFeedViewController: UIViewController,MNMBottomPullToRefreshManagerClie
         // ローディングを開始する.
         MRProgressOverlayView.showOverlayAddedTo(self.view, animated: true);
         
+        // 画面を下に引っ張った際には、最新の画像を取得する.
         refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: "refreshLatestMedia", forControlEvents: UIControlEvents.ValueChanged)
         selfFeedTable.addSubview(refreshControl)
         
+        // 画面を上に引っ張った際には、過去の画像を取得する.
         self.refreshManager = MNMBottomPullToRefreshManager(pullToRefreshViewHeight: 60.0, tableView: selfFeedTable, withClient: self)
         
-        // タイムラインの画像URLを取得する.
-        self.getSelfFeed()
+        // 最新の画像を取得する.
+        self.refreshLatestMedia()
         
         print("display self feed end")
     }
@@ -58,7 +58,7 @@ class SelfFeedViewController: UIViewController,MNMBottomPullToRefreshManagerClie
     // TableViewの画像を指定
     func tableView(selfFeedTable: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        print("table view start \(indexPath.row)")
+        print("table view start. cell: \(indexPath.row)")
         
         // tableCellのIDでUITableViewCellのインスタンスを生成
         let cell = selfFeedTable.dequeueReusableCellWithIdentifier("mediaCell", forIndexPath: indexPath)
@@ -77,40 +77,37 @@ class SelfFeedViewController: UIViewController,MNMBottomPullToRefreshManagerClie
         
         return cell
     }
-    
-    // リフレッシュ時の処理
-    func refresh() {
-        print("refresh start.")
+
+    // 画面を上に引っ張った際のリフレッシュ時の処理
+    func refreshNextMedia() {
+        print("refresh next media start.")
         engine.getSelfFeedWithCount(refreshCount, maxId: self.nextMaxId as String, success: { media, painationInfo in
             
             print(media.count)
             
             if media.count > 0 {
- 
-                print("media update.")
 
-                for (index, m) in media.enumerate() {
-                    print(index)
+                for m in media {
                     print(m.standardResolutionImageURL)
                     self.medias.append(m as! InstagramMedia)
                 }
                 
+                self.nextMaxId = painationInfo.nextMaxId
                 print(self.medias.count)
                 self.selfFeedTable.reloadData()
                 
+                self.refreshManager.tableViewReloadFinished()
+                print("media updated.")
+
             } else {
-                print("no media update.")
+                print("no media updated.")
             }
-            
-            self.nextMaxId = painationInfo.nextMaxId
-            self.refreshControl.endRefreshing()
             
             }, failure: { error, serverStatusCode in
                 
                 print(error)
-                self.refreshControl.endRefreshing()
         })
-        print("refresh end.")
+        print("refresh next media end.")
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -122,44 +119,54 @@ class SelfFeedViewController: UIViewController,MNMBottomPullToRefreshManagerClie
     }
     
     func bottomPullToRefreshTriggered(manager :MNMBottomPullToRefreshManager) {
-        self.refresh()
+        self.refreshNextMedia()
     }
     
     /*
     自分のフィードの画像URLを取得する.
     */
-    func getSelfFeed(){
+    func refreshLatestMedia(){
         
-        print("start get self feed")
+        print("start get self feed.")
         
         engine.getSelfFeedWithSuccess({ media, paginationInfo in
             
             // 成功の場合
-            print("success get self media.\(paginationInfo.nextMaxId)")
+            print("success get self media. nextMaxId: \(paginationInfo.nextMaxId)")
             
-            self.medias = media as! [InstagramMedia]
-            self.refreshCount = self.medias.count
-            self.nextMaxId = paginationInfo.nextMaxId
+            if self.nextMaxId == paginationInfo.nextMaxId {
             
-            for m in self.medias {
+                print("now already latest media.")
+                self.refreshControl.endRefreshing()
+            
+            } else {
+            
+                self.medias = media as! [InstagramMedia]
+                self.refreshCount = self.medias.count
+                self.nextMaxId = paginationInfo.nextMaxId
                 
-                // 画像URLを取得する.
-                print(m.standardResolutionImageURL)
-                print(m.thumbnailURL)
-                print(paginationInfo)
-                
-            }
+                for m in self.medias {
+                    
+                    // 画像URLを取得する.
+                    print(m.standardResolutionImageURL)
+                    print(m.thumbnailURL)
+                    print(paginationInfo)
+                    
+                }
 
-            self.selfFeedTable.reloadData()
+                self.selfFeedTable.reloadData()
+                
+    //            dispatch_async(dispatch_get_main_queue(), {
+    //                self.selfFeedTable.reloadData()
+    //            })
+            }
             
-//            dispatch_async(dispatch_get_main_queue(), {
-//                self.selfFeedTable.reloadData()
-//            })
-            
-            // ローディングを終了する。
+            // ローディングを終了する.
             MRProgressOverlayView.dismissOverlayForView(self.view, animated: true);
             
-            print("finished getting self media.")
+            // 下に引っ張って更新の場合はrefreshControlのローディングを終了する.
+            self.refreshControl.endRefreshing()
+            print("finished getting self latest media.")
             
             },failure: { error, serverStatusCode in
                 
