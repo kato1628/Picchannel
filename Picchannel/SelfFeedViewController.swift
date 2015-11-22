@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SelfFeedViewController: UIViewController,MNMBottomPullToRefreshManagerClient, UITableViewDataSource, UITableViewDelegate{
+class SelfFeedViewController: UIViewController, MNMBottomPullToRefreshManagerClient, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var selfFeedTable: UITableView!
     

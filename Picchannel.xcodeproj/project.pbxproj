@@ -15,7 +15,7 @@
 		54CF6E281BD11B59004896A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54CF6E261BD11B59004896A8 /* LaunchScreen.storyboard */; };
 		54CF6E331BD11B59004896A8 /* PicchannelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CF6E321BD11B59004896A8 /* PicchannelTests.swift */; };
 		54CF6E3E1BD11B59004896A8 /* PicchannelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CF6E3D1BD11B59004896A8 /* PicchannelUITests.swift */; };
-		D7F5D0A2EB2EFC3944B7D127 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 108ED03726B73C408876A09F /* libPods.a */; };
+		7EA212929FC5D1B971346FA0 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D54EF6DD2E47EB481A36842 /* Pods.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +36,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		108ED03726B73C408876A09F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		37EBE50D7E7BA470D2E56190 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		5412D1011BDC6BF700799028 /* Picchannel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Picchannel-Bridging-Header.h"; sourceTree = "<group>"; };
 		546B8EDA1BF6F1D10098AA26 /* SelfFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfFeedViewController.swift; sourceTree = "<group>"; };
@@ -53,6 +52,7 @@
 		54CF6E391BD11B59004896A8 /* PicchannelUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicchannelUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		54CF6E3D1BD11B59004896A8 /* PicchannelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicchannelUITests.swift; sourceTree = "<group>"; };
 		54CF6E3F1BD11B59004896A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6D54EF6DD2E47EB481A36842 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D85B6E84FFAF0FC492D6ECBF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7F5D0A2EB2EFC3944B7D127 /* libPods.a in Frameworks */,
+				7EA212929FC5D1B971346FA0 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +85,7 @@
 		03B1D98F5ED5A544C5E3DF43 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				108ED03726B73C408876A09F /* libPods.a */,
+				6D54EF6DD2E47EB481A36842 /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
