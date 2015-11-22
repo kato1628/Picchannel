@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SlideMenuControllerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -29,13 +30,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let storyboard: UIStoryboard =  UIStoryboard(name: "Main",bundle:nil)
         
         // UIViewControllerを生成する.
-        let viewController: UIViewController
+        // let viewController: UIViewController
         
         // 表示するUIViewControllerをIdentifierをキーに取得する.
-        viewController = storyboard.instantiateViewControllerWithIdentifier("SelfFeed") as UIViewController
+        let selfFeedViewController = storyboard.instantiateViewControllerWithIdentifier("SelfFeed") as UIViewController
+        let swipeMenuViewController = storyboard.instantiateViewControllerWithIdentifier("SwipeMenu") as UIViewController
+        
+        // let selfFeedViewController = SelfFeedViewController()
+        // let swipeMenuViewController = SwipeMenuViewController()
+        
+        let slideMenuController = SlideMenuController(mainViewController: selfFeedViewController, leftMenuViewController: swipeMenuViewController)
+        
+        self.window?.rootViewController = slideMenuController
+        self.window?.makeKeyAndVisible()
         
         // rootViewControllerを設定する.
-        window?.rootViewController = viewController
+        // window?.rootViewController = viewController
         
         return true
     }
