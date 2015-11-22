@@ -29,24 +29,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // UIStoryboardを生成する.
         let storyboard: UIStoryboard =  UIStoryboard(name: "Main",bundle:nil)
         
-        // UIViewControllerを生成する.
-        // let viewController: UIViewController
-        
         // 表示するUIViewControllerをIdentifierをキーに取得する.
         let selfFeedViewController = storyboard.instantiateViewControllerWithIdentifier("SelfFeed") as UIViewController
         let swipeMenuViewController = storyboard.instantiateViewControllerWithIdentifier("SwipeMenu") as UIViewController
-        
-        // let selfFeedViewController = SelfFeedViewController()
-        // let swipeMenuViewController = SwipeMenuViewController()
-        
         let slideMenuController = SlideMenuController(mainViewController: selfFeedViewController, leftMenuViewController: swipeMenuViewController)
         
         self.window?.rootViewController = slideMenuController
         self.window?.makeKeyAndVisible()
-        
-        // rootViewControllerを設定する.
-        // window?.rootViewController = viewController
-        
         return true
     }
 
