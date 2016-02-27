@@ -46,6 +46,7 @@ class SelfFeedViewController: UIViewController, MNMBottomPullToRefreshManagerCli
         
         // viewのロード後インディケーターをoffにする.
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        self.dismissViewControllerAnimated(true, completion: nil)
         print("indicator off")
     }
     
