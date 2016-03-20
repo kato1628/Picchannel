@@ -30,14 +30,14 @@ class SelfFeedViewController: UIViewController, MNMBottomPullToRefreshManagerCli
         
         // 画面を下に引っ張った際には、最新の画像を取得する.
         refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: "refreshLatestMedia", forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: "displayTaggedMedia", forControlEvents: UIControlEvents.ValueChanged)
         selfFeedTable.addSubview(refreshControl)
         
         // 画面を上に引っ張った際には、過去の画像を取得する.
         self.refreshManager = MNMBottomPullToRefreshManager(pullToRefreshViewHeight: 60.0, tableView: selfFeedTable, withClient: self)
         
         // 最新の画像を取得する.
-        self.refreshLatestMedia()
+        self.displayTaggedMedia()
         
         print("display self feed end")
     }
@@ -242,6 +242,56 @@ class SelfFeedViewController: UIViewController, MNMBottomPullToRefreshManagerCli
         })
         
     }
+    
+    /*
+    get tagged media.
+    */
+    func displayTaggedMedia(){
+        print("start get tagged media.")
+        
+        engine.getMediaWithTagName("latte", withSuccess: {media, paginationInfo in
+            
+            // 成功の場合
+            print("success get tagged media. nextMaxId: \(paginationInfo.nextMaxId)")
+            
+            if self.nextMaxId == paginationInfo.nextMaxId {
+                
+                print("now already latest media.")
+                self.refreshControl.endRefreshing()
+                
+            } else {
+                
+                self.medias = media as! [InstagramMedia]
+                self.refreshCount = self.medias.count
+                self.nextMaxId = paginationInfo.nextMaxId
+                
+                for m in self.medias {
+                    
+                    // 画像URLを取得する.
+                    print(m.standardResolutionImageURL)
+                    print(m.thumbnailURL)
+                    print(paginationInfo)
+                    
+                }
+                
+                self.selfFeedTable.reloadData()
+                
+            }
+            
+            // ローディングを終了する.
+            MRProgressOverlayView.dismissOverlayForView(self.view, animated: true);
+            
+            // 下に引っ張って更新の場合はrefreshControlのローディングを終了する.
+            self.refreshControl.endRefreshing()
+            print("finished getting self latest media.")
+            
+            }, failure: {error, serverStatusCode in
+                // 失敗の場合
+                print(error)
+                print("failure get media.")
+        })
+    }
+    
     
     /*
     画像一覧を表示する
