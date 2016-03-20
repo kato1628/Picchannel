@@ -16,6 +16,7 @@ class SelfFeedViewController: UIViewController, MNMBottomPullToRefreshManagerCli
     let engine: InstagramEngine = InstagramEngine.sharedEngine()
     var medias: [InstagramMedia] = []
     var paginationInfo: InstagramPaginationInfo!
+    var tagName :NSString = "latte"
     var refreshControl: UIRefreshControl!
     var nextMaxId: NSString = ""
     var refreshCount: Int = 0
@@ -153,7 +154,7 @@ class SelfFeedViewController: UIViewController, MNMBottomPullToRefreshManagerCli
     func displayTaggedMedia(){
         print("start get tagged media.")
         
-        engine.getMediaWithTagName("latte", withSuccess: {media, paginationInfo in
+        engine.getMediaWithTagName(self.tagName as String, withSuccess: {media, paginationInfo in
             
             // success
             self.medias = media as! [InstagramMedia]
