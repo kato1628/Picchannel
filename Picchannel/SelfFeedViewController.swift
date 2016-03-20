@@ -320,15 +320,6 @@ class SelfFeedViewController: UIViewController, MNMBottomPullToRefreshManagerCli
             
         } else {
             
-            for m in self.medias {
-                
-                // 画像URLを取得する.
-                print(m.standardResolutionImageURL)
-                print(m.thumbnailURL)
-                print(paginationInfo)
-                
-            }
-            
             self.selfFeedTable.reloadData()
             
         }
