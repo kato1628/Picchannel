@@ -15,6 +15,7 @@ class SelfFeedViewController: UIViewController, MNMBottomPullToRefreshManagerCli
     var mediaUrls : [NSURL] = []
     let engine: InstagramEngine = InstagramEngine.sharedEngine()
     var medias: [InstagramMedia] = []
+    var paginationInfo: InstagramPaginationInfo!
     var refreshControl: UIRefreshControl!
     var nextMaxId: NSString = ""
     var refreshCount: Int = 0
@@ -252,38 +253,9 @@ class SelfFeedViewController: UIViewController, MNMBottomPullToRefreshManagerCli
         engine.getMediaWithTagName("latte", withSuccess: {media, paginationInfo in
             
             // 成功の場合
-            print("success get tagged media. nextMaxId: \(paginationInfo.nextMaxId)")
-            
-            if self.nextMaxId == paginationInfo.nextMaxId {
-                
-                print("now already latest media.")
-                self.refreshControl.endRefreshing()
-                
-            } else {
-                
-                self.medias = media as! [InstagramMedia]
-                self.refreshCount = self.medias.count
-                self.nextMaxId = paginationInfo.nextMaxId
-                
-                for m in self.medias {
-                    
-                    // 画像URLを取得する.
-                    print(m.standardResolutionImageURL)
-                    print(m.thumbnailURL)
-                    print(paginationInfo)
-                    
-                }
-                
-                self.selfFeedTable.reloadData()
-                
-            }
-            
-            // ローディングを終了する.
-            MRProgressOverlayView.dismissOverlayForView(self.view, animated: true);
-            
-            // 下に引っ張って更新の場合はrefreshControlのローディングを終了する.
-            self.refreshControl.endRefreshing()
-            print("finished getting self latest media.")
+            self.medias = media as! [InstagramMedia]
+            self.paginationInfo = paginationInfo
+            self.invoke()
             
             }, failure: {error, serverStatusCode in
                 // 失敗の場合
@@ -335,6 +307,38 @@ class SelfFeedViewController: UIViewController, MNMBottomPullToRefreshManagerCli
             print("error has occurred.")
             return
         }
+    }
+    
+    func invoke(){
+        
+        print("success get tagged media. nextMaxId: \(self.paginationInfo.nextMaxId)")
+        
+        if self.nextMaxId == self.paginationInfo.nextMaxId {
+            
+            print("now already latest media.")
+            self.refreshControl.endRefreshing()
+            
+        } else {
+            
+            for m in self.medias {
+                
+                // 画像URLを取得する.
+                print(m.standardResolutionImageURL)
+                print(m.thumbnailURL)
+                print(paginationInfo)
+                
+            }
+            
+            self.selfFeedTable.reloadData()
+            
+        }
+        
+        // ローディングを終了する.
+        MRProgressOverlayView.dismissOverlayForView(self.view, animated: true);
+        
+        // 下に引っ張って更新の場合はrefreshControlのローディングを終了する.
+        self.refreshControl.endRefreshing()
+        print("finished getting self latest media.")
     }
     
 }
