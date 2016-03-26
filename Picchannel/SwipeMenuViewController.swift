@@ -10,6 +10,15 @@ import UIKit
 
 class SwipeMenuViewController: UIViewController {
     
+    @IBAction func searchMediaByTagName(sender: AnyObject) {
+        let tagNameButton:UIButton = sender as! UIButton
+        let tagName : NSString = tagNameButton.currentTitle!
+        print(tagName)
+        // let tagNameViewController : UIViewController = SelfFeedViewController()
+        // tagNameViewController.modalTransitionStyle = UIModalTransitionStyle.PartialCurl
+        // self.presentedViewController(tagNameViewController, animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -20,4 +29,6 @@ class SwipeMenuViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
 }
