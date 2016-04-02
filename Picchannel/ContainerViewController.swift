@@ -25,11 +25,11 @@ class ContainerViewController: SlideMenuController {
     override func awakeFromNib() {
         if let controller = self.storyboard?.instantiateViewControllerWithIdentifier("SelfFeed") {
             self.mainViewController = controller
-            print("load SelfFeed.")
+            print("set SelfFeed to mainVC.")
         }
         if let controller = self.storyboard?.instantiateViewControllerWithIdentifier("SwipeMenu") {
             self.leftViewController = controller
-            print("load SwipeMenu.")
+            print("set SwipeMenu to leftVC.")
         }
         super.awakeFromNib()
     }

@@ -17,7 +17,7 @@ class SwipeMenuViewController: UIViewController {
     @IBAction func searchMediaByTagName(sender: AnyObject) {
         self.tagNameButton = sender as? UIButton
         self.tagName = tagNameButton!.currentTitle!
-        performSegueWithIdentifier("toContainerViewController",sender: nil)
+        performSegueWithIdentifier("toContainerViewController", sender: nil)
     }
     
     override func viewDidLoad() {
@@ -35,6 +35,9 @@ class SwipeMenuViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {   
         if (segue.identifier == "toContainerViewController") {
             print("segue...")
+            let containerViewController: ContainerViewController = (segue.destinationViewController as? ContainerViewController)!
+            let main = containerViewController.mainViewController! as! SelfFeedViewController
+            main.tagName = self.tagName!.substringFromIndex(1)
         }
     }
 }
