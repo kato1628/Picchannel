@@ -95,7 +95,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="305" y="387"/>
+            <point key="canvasLocation" x="310" y="387"/>
+        </scene>
+        <!--Container View Controller-->
+        <scene sceneID="PGQ-P0-ztN">
+            <objects>
+                <viewController id="9h0-Oc-prg" customClass="ContainerViewController" customModule="Picchannel" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cn5-dm-aY4"/>
+                        <viewControllerLayoutGuide type="bottom" id="0T8-lG-PHz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XYy-24-boU">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wpc-mU-cz3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1040" y="387"/>
         </scene>
         <!--Swipe Menu View Controller-->
         <scene sceneID="lTE-dQ-dEE">
@@ -110,8 +128,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SXd-MT-knf">
-                                <rect key="frame" x="24" y="28" width="40" height="30"/>
-                                <state key="normal" title="#latte"/>
+                                <rect key="frame" x="13" y="28" width="62" height="30"/>
+                                <state key="normal" title="#running"/>
                                 <connections>
                                     <action selector="searchMediaByTagName:" destination="x4T-Cs-8C7" eventType="touchUpInside" id="11Y-z0-3Ts"/>
                                 </connections>
@@ -119,6 +137,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <segue destination="9h0-Oc-prg" kind="presentation" identifier="toContainerViewController" id="3cp-uw-DAV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZJJ-h4-we5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -192,13 +213,14 @@
                             <constraint firstItem="cER-Hr-BuK" firstAttribute="bottom" secondItem="OKH-lG-GMh" secondAttribute="top" id="eoA-2s-7RQ"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="hbb-Yp-dc4"/>
                     <connections>
                         <outlet property="selfFeedTable" destination="cER-Hr-BuK" id="hlK-AI-iu2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Row-4r-0Cw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="960" y="1093"/>
+            <point key="canvasLocation" x="1040" y="1093"/>
         </scene>
     </scenes>
 </document>

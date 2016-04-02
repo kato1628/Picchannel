@@ -47,9 +47,9 @@ class SelfFeedViewController: UIViewController, MNMBottomPullToRefreshManagerCli
     override func viewDidAppear(animated: Bool) {
         
         // viewのロード後インディケーターをoffにする.
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-        self.dismissViewControllerAnimated(true, completion: nil)
-        print("indicator off")
+//        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+//        self.dismissViewControllerAnimated(true, completion: nil)
+//        print("indicator off")
     }
     
     // TableViewのセルの数を指定

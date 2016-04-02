@@ -46,13 +46,13 @@ class ViewController: UIViewController, UIWebViewDelegate {
             print("success to get access token.")
             
             // 遷移先のUIViewControllerを生成する.
-            let selfFeedViewController: UIViewController = SelfFeedViewController()
+            let containerViewController: UIViewController = ContainerViewController()
             
             // アニメーションを設定する.
-            selfFeedViewController.modalTransitionStyle = UIModalTransitionStyle.PartialCurl
+            containerViewController.modalTransitionStyle = UIModalTransitionStyle.PartialCurl
             
             // Viewを移動する.
-            self.presentViewController(selfFeedViewController, animated: true, completion: nil)
+            self.presentViewController(containerViewController, animated: true, completion: nil)
             
             
         } catch {

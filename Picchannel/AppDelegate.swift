@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+
         return true
     }
     
@@ -23,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // URLをログ出力する.
         print(url)
-        
         // TODO ルーティング処理を追加する.
         
         // UIStoryboardを生成する.
