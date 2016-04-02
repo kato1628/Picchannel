@@ -37,7 +37,7 @@ class SwipeMenuViewController: UIViewController {
             print("segue...")
             let containerViewController: ContainerViewController = (segue.destinationViewController as? ContainerViewController)!
             let main = containerViewController.mainViewController! as! SelfFeedViewController
-            main.tagName = self.tagName!.substringFromIndex(1)
+            main.tagName = self.tagName!.substringFromIndex(2)
         }
     }
 }
